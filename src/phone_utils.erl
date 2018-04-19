@@ -94,7 +94,7 @@ get_rules_for_code([{Code, Phone} | Rest]) ->
 
 valid_phone_with_rules(Phone, no_rules, _) ->
   %validate does it looks like phone number
-  case re:run(Phone, ?REGEXP_PHONE, [{capture, none}]) of
+  case re:run(<<"+", Phone/binary>>, ?REGEXP_PHONE, [{capture, none}]) of
     match ->
       true;
     _ ->

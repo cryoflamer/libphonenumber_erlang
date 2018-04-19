@@ -4,7 +4,7 @@
 -export([start_link/0]).
 -export([init/1]).
 
--include("../include/phonenumbers.hrl").
+-include("include/phonenumbers.hrl").
 
 start_link() ->
 	supervisor:start_link({local, ?MODULE}, ?MODULE, []).
@@ -43,8 +43,13 @@ load_countryphonenumbers_rules() ->
 init_mnesia() ->
 	mnesia:create_schema([node()]),
 	mnesia:start(),
+	%main country info
 	mnesia:create_table(?PHONENUMBERS,
 		[{attributes, record_info(fields, ?PHONENUMBERS)},
 			{index, [#?PHONENUMBERS.id]}]),
+	%carrier for country
+	mnesia:create_table(?CARRIER,
+		[{attributes, record_info(fields, ?CARRIER)},
+			{index, [#?CARRIER.code]}]),
 	ok.
 
